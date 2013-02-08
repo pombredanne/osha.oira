@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.2.37syslab2 (unreleased)
+--------------------------
+
+- Nothing changed yet.
+
+
 1.2.37syslab1 (2013-02-08)
 --------------------------
 
