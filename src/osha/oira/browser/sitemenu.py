@@ -20,7 +20,7 @@ class OiraSitemenu(EuphorieSitemenu):
         portal_url = urltool.getPortalObject().absolute_url()
 
         children.append(
-                {"title": _("menu_statistics", default=u"Statistics"),
+                {"title": _("title_statistics", default=u"Statistics Reporting"),
                  "url": "%s/@@show-statistics" % portal_url})
 
         if children:
