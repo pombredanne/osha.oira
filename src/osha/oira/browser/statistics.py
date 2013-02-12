@@ -108,8 +108,8 @@ class ShowStatistics(grok.View):
     def update(self):
         countries = summarizeCountries(aq_inner(self.context['sectors']),
                 self.request)
-        self.countries = countries['region'] + \
-                         countries['country']
+        self.countries = reduce(lambda x,y: x + y, countries.values())
+        self.countries.sort(key=lambda c: c['title'])
         self.years = range(datetime.now().year, 2010, -1)
         self.tools = []
         for root in self.context.objectValues():
