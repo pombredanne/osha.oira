@@ -1,5 +1,7 @@
+from Acquisition import aq_inner, aq_parent
 from five import grok
-from Products.CMFCore.utils import getToolByName
+from euphorie.content.sectorcontainer import ISectorContainer
+from euphorie.content.sector import ISector
 from euphorie.deployment.browser.sitemenu import EuphorieSitemenu
 from osha.oira import _
 from osha.oira.interfaces import IOSHAContentSkinLayer
@@ -16,12 +18,14 @@ class OiraSitemenu(EuphorieSitemenu):
             menu = {"title": nu_("menu_organise", default=u"Organise")}
             children = menu["children"] = []
 
-        urltool = getToolByName(self.context, 'portal_url')
-        portal_url = urltool.getPortalObject().absolute_url()
-
-        children.append(
-                {"title": _("title_statistics", default=u"Statistics Reporting"),
-                 "url": "%s/@@show-statistics" % portal_url})
+        context = aq_inner(self.context)
+        context_url = context.absolute_url()
+        if ISectorContainer.providedBy(context) or \
+           ISectorContainer.providedBy(aq_parent(context)) or \
+           ISector.providedBy(self.context):
+            children.append(
+                    {"title": _("title_statistics", default=u"Statistics Reporting"),
+                     "url": "%s/@@show-statistics" % context_url})
 
         if children:
             return menu

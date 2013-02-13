@@ -2,16 +2,18 @@
 
 import logging
 from AccessControl import Unauthorized
-from Acquisition import aq_inner
+from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.CMFPlone.utils import safe_unicode
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.statusmessages.interfaces import IStatusMessage
+from zope.interface import Interface
 from datetime import datetime
 from five import grok
 
-from euphorie.content.utils import summarizeCountries
+from euphorie.content.sectorcontainer import ISectorContainer
+from euphorie.content.sector import ISector
 
 from z3c.saconfig import Session
 from zope.sqlalchemy import datamanager
@@ -97,63 +99,81 @@ class WriteStatistics(grok.View):
 
 class ShowStatistics(grok.View):
 
-    grok.context(IPloneSiteRoot)
+    grok.context(Interface)
     grok.name('show-statistics')
+    grok.require('zope2.View')
 
     filename = { 'overview': 'usage_statistics_overview.rptdesign',
                  'country': 'usage_statistics_country.rptdesign',
                  'tool': 'usage_statistics_tool.rptdesign',
                }
+    report_path = 'statistics'
 
     def update(self):
-        countries = summarizeCountries(aq_inner(self.context['sectors']),
-                self.request)
-        self.countries = reduce(lambda x,y: x + y, countries.values())
-        self.countries.sort(key=lambda c: c['title'])
+        if ISectorContainer.providedBy(self.context):
+            self.report_type = 'overview'
+        elif ISectorContainer.providedBy(aq_parent(self.context)):
+            self.report_type = 'country'
+        elif ISector.providedBy(self.context):
+            self.report_type = 'tool'
+            sector = self.context.getId()
+            country = aq_parent(self.context).getId()
+            self.tools = []
+            urltool = getToolByName(self.context, 'portal_url')
+            portal = urltool.getPortalObject()
+            client = portal.get('client')
+            def fail():
+                self.report_type = None
+                return
+            country_ob = client.get(country)
+            if not country_ob:
+                fail()
+            sector_ob = country_ob.get(sector)
+            if not sector_ob:
+                fail()
+            for survey_or_group in sector_ob.objectValues():
+                if survey_or_group.portal_type == 'euphorie.survey':
+                    self.tools.append('/'.join(survey_or_group.getPhysicalPath()[-3:]))
+                elif survey_or_group.portal_type == 'euphorie.surveygroup':
+                    self.tools.extend(['/'.join(survey.getPhysicalPath()[-4:])
+                        for survey in survey_or_group.objectValues()])
+        else:
+            self.report_type = None
         self.years = range(datetime.now().year, 2010, -1)
-        self.tools = []
-        for root in self.context.objectValues():
-            for country in root.objectValues():
-                for sector in country.objectValues():
-                    for survey_or_group in sector.objectValues():
-                        if survey_or_group.portal_type == 'euphorie.survey':
-                            self.tools.append('/'.join(survey_or_group.getPhysicalPath()[-3:]))
-                        elif survey_or_group.portal_type == 'euphorie.surveygroup':
-                            self.tools.extend(['/'.join(survey.getPhysicalPath()[-4:])
-                                for survey in survey_or_group.objectValues()])
 
     def render(self):
         pm = getToolByName(self.context, 'portal_membership')
         if pm.isAnonymousUser():
             raise Unauthorized, 'must be logged in to view statistics'
-        #member = pm.getAuthenticatedMember()
         
+        report_type = self.report_type
+        if report_type is None:
+            IStatusMessage(self.request).addStatusMessage(
+                    "No statistics available for this context",
+                    type=u'error')
+            return self.request.response.redirect(self.context.absolute_url())
+
         if not 'submit' in self.request.form:
             template = ViewPageTemplateFile('templates/statistics.pt')
             return template(self)
+
         ptool = getToolByName(self.context, 'portal_properties')
         site_properties = ptool.site_properties
         url = site_properties.getProperty('birt_report_url')
+        # birt_report_url should look something like this:
+        # http://localhost:8080/birt-viewer/frameset?__format=pdf&__pageoverflow=0&__asattachment=true&__overwrite=false
+
         if not url:
             IStatusMessage(self.request).addStatusMessage(
                     "birt_report_url not set, please contact an administrator",
                     type=u'error')
             return self.request.response.redirect(self.context.absolute_url())
-        #URL = 'http://localhost:8080/birt-viewer/frameset?__format=pdf&__pageoverflow=0&__asattachment=true&__overwrite=false'
-        # __report=report/OiRA-Reports/usage_statistics.rptdesign
-        #parsedurl = urlparse.urlparse(URL)
-        #parsedquery = urlparse.parse_qs(parsedurl.query)
-        #parsedquery['member_id'] = member.id
-        #url = urlparse.urlunparse(parsedurl[:4] + (urllib.urlencode(parsedquery),) + parsedurl[5:])
 
-        report_type = self.request.get('type')
         filename = self.filename[report_type]
-        url = "&".join([url, '__report=statistics/%s' % filename])
-
-        #url = url + '&sector=%s' % member.id
+        url = "&".join([url, '__report=%s/%s' % (self.report_path, filename)])
 
         if report_type == 'country':
-            url = "&".join([url, 'country=%s' % self.request.get('country')])
+            url = "&".join([url, 'country=%s' % self.context.getId()])
         elif report_type == 'tool':
             url = "&".join([url, 'tool=%s' % self.request.get('tool')])
         elif report_type == 'overview':

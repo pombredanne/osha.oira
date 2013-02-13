@@ -14,16 +14,7 @@
     <metal:content fill-slot="content">
     <form method="post" class="statisticsParametersForm">
         <input type="hidden" name="submit" value="1"/>
-        <label for="type">Report Type</label><br />
-        <select name="type" id="type">
-            <option value="overview">EU-OSHA Overview</option>
-            <option value="country">Country</option>
-            <option value="tool">Tool</option>
-        </select><br />
-        <select name="country" id="country">
-            <option tal:repeat="country view/countries" value="eu" tal:attributes="value country/id" tal:content="country/title">European Union</option>
-        </select>
-        <select name="tool" id="tool">
+        <select name="tool" id="tool" tal:condition="python:view.report_type == 'tool'">
             <option tal:repeat="tool view/tools" value="cy/hairdressers/cyprus_hairdressers" tal:attributes="value tool" tal:content="tool">
         </select><br />
         <label for="period">Report Period</label>
@@ -59,29 +50,5 @@
         <input type="submit" i18n:attributes="value Submit" value="Submit">
     </form>
     </metal:content>
-    <metal:scripts fill-slot="scripts">
-    <script type="text/javascript">
-        function showhide(value) {
-            if (value == 'country') {
-                jQuery('#tool').hide();
-                jQuery('#country').show();
-            }
-            if (value == 'tool') {
-                jQuery('#tool').show();
-                jQuery('#country').hide();
-            }
-            if (value == 'overview') {
-                jQuery('#tool').hide();
-                jQuery('#country').hide();
-            }
-        }
-        jQuery(document).ready(function () {
-                showhide(jQuery('#type').attr('value'));
-                jQuery('#type').change(function (ev) {
-                    showhide(ev.target.value);
-                });
-        });
-    </script>
-    </metal:scripts>
   </body>
 </html>
