@@ -904,11 +904,10 @@ msgstr ""
 msgid "message_not_delete_published_surveygroup"
 msgstr "Nemôžete vymazať nástroj OiRA, ktorý bol uverejnený."
 
-#. Default: Statistics Reporting
+#. Default: Statistics
 #: src/osha/oira/browser/templates/statistics.pt:13
-#, fuzzy
 msgid "title_statistics"
-msgstr "Štatistická úroveň"
+msgstr "Štatistiky"
 
 #: src/osha/oira/profiles/default/types/euphorie.profilequestion.xml:7
 #, fuzzy

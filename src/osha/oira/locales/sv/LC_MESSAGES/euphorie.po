@@ -893,11 +893,10 @@ msgstr ""
 msgid "message_not_delete_published_surveygroup"
 msgstr "Du kan inte radera ett OiRA-verktyg som har publicerats."
 
-#. Default: Statistics Reporting
+#. Default: Statistics
 #: src/osha/oira/browser/templates/statistics.pt:13
 msgid "title_statistics"
-msgstr ""
-
+msgstr "Statistik"
 #: src/osha/oira/profiles/default/types/euphorie.profilequestion.xml:7
 #, fuzzy
 msgid "Profile question"

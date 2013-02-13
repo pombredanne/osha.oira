@@ -921,11 +921,10 @@ msgstr ""
 msgid "message_not_delete_published_surveygroup"
 msgstr "Et voi poistaa julkaistua OiRA-työkalua."
 
-#. Default: Statistics Reporting
+#. Default: Statistics
 #: src/osha/oira/browser/templates/statistics.pt:13
-#, fuzzy
 msgid "title_statistics"
-msgstr "Tilastotaso"
+msgstr "Tilastot"
 
 #: src/osha/oira/profiles/default/types/euphorie.profilequestion.xml:7
 msgid "Profile question"

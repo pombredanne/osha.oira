@@ -803,7 +803,7 @@ msgstr ""
 msgid "message_not_delete_published_surveygroup"
 msgstr ""
 
-#. Default: Statistics Reporting
+#. Default: Statistics
 #: src/osha/oira/browser/templates/statistics.pt:13
 msgid "title_statistics"
 msgstr ""

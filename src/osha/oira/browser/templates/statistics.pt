@@ -10,7 +10,7 @@
       id="statistics"
       metal:use-macro="context/@@layout/macros/layout">
   <body>
-    <metal:title fill-slot="title" i18n:translate="title_statistics">Statistics Reporting</metal:title>
+    <metal:title fill-slot="title" i18n:translate="title_statistics">Statistics</metal:title>
     <metal:content fill-slot="content">
     <form method="post" class="statisticsParametersForm">
         <input type="hidden" name="submit" value="1"/>

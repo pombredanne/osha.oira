@@ -914,11 +914,10 @@ msgstr ""
 msgid "message_not_delete_published_surveygroup"
 msgstr "Orodja OiRA, ki ni bilo objavljeno, ne morete izbrisati."
 
-#. Default: Statistics Reporting
+#. Default: Statistics
 #: src/osha/oira/browser/templates/statistics.pt:13
-#, fuzzy
 msgid "title_statistics"
-msgstr "Statistična raven"
+msgstr "Statistika"
 
 #: src/osha/oira/profiles/default/types/euphorie.profilequestion.xml:7
 msgid "Profile question"

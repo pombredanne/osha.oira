@@ -930,11 +930,10 @@ msgstr ""
 msgid "message_not_delete_published_surveygroup"
 msgstr "Vous ne pouvez pas supprimer un outil OiRA qui a été publié."
 
-#. Default: Statistics Reporting
+#. Default: Statistics
 #: src/osha/oira/browser/templates/statistics.pt:13
 msgid "title_statistics"
-msgstr ""
-
+msgstr "Statistiques"
 #: src/osha/oira/profiles/default/types/euphorie.profilequestion.xml:7
 msgid "Profile question"
 msgstr "Question de profil"

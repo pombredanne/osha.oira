@@ -911,11 +911,10 @@ msgstr ""
 msgid "message_not_delete_published_surveygroup"
 msgstr "Jūs nevarat dzēst OiRA rīku, kas ir publicēts."
 
-#. Default: Statistics Reporting
+#. Default: Statistics
 #: src/osha/oira/browser/templates/statistics.pt:13
-#, fuzzy
 msgid "title_statistics"
-msgstr "Statistikas līmenis"
+msgstr "Statistika"
 
 #: src/osha/oira/profiles/default/types/euphorie.profilequestion.xml:7
 msgid "Profile question"
