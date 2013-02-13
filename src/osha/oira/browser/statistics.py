@@ -123,6 +123,11 @@ class ShowStatistics(grok.View):
                                 for survey in survey_or_group.objectValues()])
 
     def render(self):
+        pm = getToolByName(self.context, 'portal_membership')
+        if pm.isAnonymousUser():
+            raise Unauthorized, 'must be logged in to view statistics'
+        #member = pm.getAuthenticatedMember()
+        
         if not 'submit' in self.request.form:
             template = ViewPageTemplateFile('templates/statistics.pt')
             return template(self)
@@ -136,11 +141,6 @@ class ShowStatistics(grok.View):
             return self.request.response.redirect(self.context.absolute_url())
         #URL = 'http://localhost:8080/birt-viewer/frameset?__format=pdf&__pageoverflow=0&__asattachment=true&__overwrite=false'
         # __report=report/OiRA-Reports/usage_statistics.rptdesign
-        pm = getToolByName(self.context, 'portal_membership')
-        if pm.isAnonymousUser():
-            raise Unauthorized, 'must be logged in to view statistics'
-        member = pm.getAuthenticatedMember()
-        
         #parsedurl = urlparse.urlparse(URL)
         #parsedquery = urlparse.parse_qs(parsedurl.query)
         #parsedquery['member_id'] = member.id
