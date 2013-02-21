@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: osha.oira 1.2.23.dev0\n"
 "Report-Msgid-Bugs-To: thomas@syslab.com\n"
 "POT-Creation-Date: 2013-01-30 10:06+0200\n"
-"PO-Revision-Date: 2013-02-15 15:40+0200\n"
+"PO-Revision-Date: 2013-02-21 10:54+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -904,12 +904,8 @@ msgstr "You can not delete an OiRA tool that has been published."
 #. Default: Statistics
 #: src/osha/oira/browser/templates/statistics.pt:13
 msgid "title_statistics"
-<<<<<<< HEAD
 msgstr "Statistics"
-=======
-msgstr "Statistics Reporting"
 
->>>>>>> 278f03a... Restore the removed en translations
 #: src/osha/oira/profiles/default/types/euphorie.profilequestion.xml:7
 msgid "Profile question"
 msgstr "Profile question"
