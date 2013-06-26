@@ -7,20 +7,21 @@ from zope.interface import implements
 
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 
-from z3c.form import button
+from htmllaundry.z3cform import HtmlText
 from plone.app.dexterity.behaviors.metadata import IBasic
+from plone.app.z3cform.wysiwyg import WysiwygFieldWidget
 from plone.dexterity.browser import edit
 from plone.dexterity.events import EditFinishedEvent
 from plone.directives import dexterity
 from plone.directives import form
 from plone.z3cform import layout
+from z3c.form import button
 
 from euphorie.content import MessageFactory as _
 from euphorie.client.utils import setRequest
 
 from osha.oira.client.interfaces import IOSHAClientSkinLayer
 from osha.oira.interfaces import IProductLayer
-from osha.oira.nuplone.widget import LargeTextAreaFieldWidget
 
 
 grok.templatedir("templates")
@@ -29,9 +30,9 @@ grok.templatedir("templates")
 class IHomePage(form.Schema, IBasic):
     """ Custom user editable homepage
     """
-    description = schema.Text(
+    description = HtmlText(
         title=_("label_homepage_description", u"HTML Source Code"))
-    form.widget(description=LargeTextAreaFieldWidget)
+    form.widget(description=WysiwygFieldWidget)
 
 
 class HomePage(dexterity.Container):

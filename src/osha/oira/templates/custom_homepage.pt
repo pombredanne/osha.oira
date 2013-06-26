@@ -37,6 +37,15 @@
     </style>
   </head>
   <body>
+    <h1 style="text-align:center">${here/title}</h1>
+    <ul id="navigation">
+        <li id="home">
+            <a href="https://client.oiraproject.eu">
+                <strong>OiRA - Online interactive Risk Assessment</strong><br>
+                    Online interactive<br>
+                    Risk Assessment</a>
+        </li>
+    </ul>
     <tal:render content="structure view/render_body"/>
     <metal:css use-macro="webhelpers/macros/appendix"/>
     <metal:css use-macro="webhelpers/macros/javascript"/>
